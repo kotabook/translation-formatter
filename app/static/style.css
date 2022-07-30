@@ -8,17 +8,26 @@
     margin-bottom: 0;
     background-color: #fff;
 }
-  
+
 .jumbotron p:last-child {
     margin-bottom: 0;
 }
-  
+
 .jumbotron-heading {
     font-weight: 300;
 }
-  
+
 .jumbotron .container {
     max-width: 60rem;
+}
+
+.clearButton{
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    cursor: pointer;	
 }
 
 img {

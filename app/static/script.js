@@ -3,18 +3,24 @@
 const deepl_url = `https://www.deepl.com/translator#`;
 
 // ペースト箇所
-let paste_textarea     = document.getElementById("paste_textarea");
+let paste_textarea      = document.getElementById("paste_textarea");
 // フォーマット結果表示箇所
-let format_textarea    = document.getElementById("format_textarea");
+let format_textarea     = document.getElementById("format_textarea");
 // 翻訳結果表示箇所
-let translate_textarea = document.getElementById("translate_textarea");
+let translate_textarea  = document.getElementById("translate_textarea");
+// ペースト箇所文字数表示
+let paste_count         = document.getElementById("paste_count");
+// フォーマット結果文字数表示
+let format_count        = document.getElementById("format_count");
 
 // 警告の表示先である要素を取得
-const text_error    = document.getElementById("text_error");
+const text_error        = document.getElementById("text_error");
 // 送信ボタンを取得
-const submit_button = document.getElementById("submit_button");
+const submit_button     = document.getElementById("submit_button");
 // 変換ボタンを取得
-const conversion_button = document.getElementById("conversion_button")
+const conversion_button = document.getElementById("conversion_button");
+// 文字消去ボタンを取得
+const clear_button      = document.getElementById("clear_button");
 
 // フォーマットするリストを取得
 let format_list = [];
@@ -62,10 +68,13 @@ function validateButton() {
 
 // ペースト箇所に変更があれば実行する関数
 paste_textarea.addEventListener("input", function() {
+    console.log(format_textarea)
     // ペースト箇所の文字列を取得
     let paste_text = paste_textarea.value;
     // 文字列の長さを取得
     let text_length = textCounter(paste_text);
+    // 文字数表示
+    paste_count.value = String(text_length) + ` Characters`;
     // もし文字列入力がなければ
     if (text_length == 0) {
         // ボタンを無効化
@@ -86,8 +95,8 @@ paste_textarea.addEventListener("input", function() {
     for (let i = 0; i < format_list.length; i++) {
         paste_text = paste_text.replaceAll(format_list[i][0], format_list[i][1]);
     }
-    // 結果を表示
-    format_textarea.textContent = paste_text;
+    format_textarea.value = paste_text;
+    format_count.value = String(textCounter(paste_text)) + ` Characters`;
     return 0;
 });
 
@@ -125,13 +134,14 @@ submit_button.addEventListener("click", function() {
     }
 });
 
+// 追加変換ボタンをクリックした時の処理
 conversion_button.addEventListener("click", function() {
     // 変換前の入力欄
     let before_conversion = document.getElementById("before_conversion").value;
     // 変換後の入力欄
     let after_conversion  = document.getElementById("after_conversion").value;
     // もし、いずれかの要素が空であれば
-    if (before_conversion == `` || after_conversion == ``) {
+    if (before_conversion == ``) {
         // エラーを出力
         text_error.innerHTML = `<p class="text-danger">Conversion not possible because the required information has not been entered.</p>`;
     } else {
@@ -140,7 +150,23 @@ conversion_button.addEventListener("click", function() {
         let format_text = format_textarea.value;
         let new_format_text = format_text.replaceAll(before_conversion, after_conversion);
         // 結果を表示
-        format_textarea.textContent = new_format_text;
+        format_textarea.value = new_format_text;
+        format_count.value = String(textCounter(new_format_text)) + ` Characters`;
         return 0;
     }
+});
+
+// テキスト削除ボタンをクリックした時の処理
+clear_button.addEventListener("click", function() {
+    console.log(paste_textarea)
+    // テキストを削除
+    paste_textarea.value  = ``;
+    format_textarea.value = ``;
+    // 文字数カウントを0にする
+    paste_count.value  = `0 Characters`;
+    format_count.value = `0 Characters`;
+    // ボタンを無効化
+    invalidateButton();
+    conversion_button.disabled = true;
+    return 0;
 });
