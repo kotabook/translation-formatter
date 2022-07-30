@@ -1,0 +1,55 @@
+:root {
+    --jumbotron-padding-y: 3rem;
+}
+  
+.jumbotron {
+    padding-top: var(--jumbotron-padding-y);
+    padding-bottom: var(--jumbotron-padding-y);
+    margin-bottom: 0;
+    background-color: #fff;
+}
+  
+.jumbotron p:last-child {
+    margin-bottom: 0;
+}
+  
+.jumbotron-heading {
+    font-weight: 300;
+}
+  
+.jumbotron .container {
+    max-width: 60rem;
+}
+
+img {
+    height: 225px;
+    width: 100%;
+    display: block;
+    object-fit: contain;
+}
+  
+footer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+  
+footer p {
+    margin-bottom: .25rem;
+}
+
+.form-group select {
+    border: solid 2px #333;
+    border-radius: 0px;
+    color: #333;
+}
+
+.form-group textarea {
+    border: solid 2px #333;
+    border-radius: 0px;
+    resize: none;
+}
+
+.form-group textarea:focus {
+    border-color: #333;
+    outline: none;
+}
