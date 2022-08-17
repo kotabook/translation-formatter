@@ -3,24 +3,26 @@
 const deepl_url = `https://www.deepl.com/translator#`;
 
 // ペースト箇所
-let paste_textarea      = document.getElementById("paste_textarea");
+let paste_textarea       = document.getElementById("paste_textarea");
 // フォーマット結果表示箇所
-let format_textarea     = document.getElementById("format_textarea");
+let format_textarea      = document.getElementById("format_textarea");
 // 翻訳結果表示箇所
-let translate_textarea  = document.getElementById("translate_textarea");
+let translate_textarea   = document.getElementById("translate_textarea");
 // ペースト箇所文字数表示
-let paste_count         = document.getElementById("paste_count");
+let paste_count          = document.getElementById("paste_count");
 // フォーマット結果文字数表示
-let format_count        = document.getElementById("format_count");
+let format_count         = document.getElementById("format_count");
+// 2つ連続する改行を無視するかどうかのチェックボックス
+let consecutive_checkbox = document.getElementById("consecutive_checkbox");
 
 // 警告の表示先である要素を取得
-const text_error        = document.getElementById("text_error");
+const text_error         = document.getElementById("text_error");
 // 送信ボタンを取得
-const submit_button     = document.getElementById("submit_button");
+const submit_button      = document.getElementById("submit_button");
 // 変換ボタンを取得
-const conversion_button = document.getElementById("conversion_button");
+const conversion_button  = document.getElementById("conversion_button");
 // 文字消去ボタンを取得
-const clear_button      = document.getElementById("clear_button");
+const clear_button       = document.getElementById("clear_button");
 
 // フォーマットするリストを取得
 let format_list = [];
@@ -66,9 +68,23 @@ function validateButton() {
     submit_button.innerHTML = `Translate By DeepL`;
 }
 
+// チェックボックスがどうなっているかを保存する変数
+let consecutive_flag = true;
+// 2つ連続の改行を無視するかどうかを調べる関数
+consecutive_checkbox.addEventListener("change", function() {
+    // チェックボックスのtrue,falseの状態を変数に代入する
+    consecutive_flag = consecutive_checkbox.checked;
+});
+
 // ペースト箇所に変更があれば実行する関数
 paste_textarea.addEventListener("input", function() {
-    console.log(format_textarea)
+    // 2つ連続した改行を無視するかどうかを取得
+    if (consecutive_flag && format_list.length == 5) {
+        format_list.push(["  ", "\n\n"]);
+    } 
+    else if (!consecutive_flag && format_list.length == 6) {
+        format_list.pop();
+    }
     // ペースト箇所の文字列を取得
     let paste_text = paste_textarea.value;
     // 文字列の長さを取得
